@@ -1,0 +1,43 @@
+<?php
+/**
+ * @var \Perspective\LoyaltyEngine\Block\Account\LoyaltyHistory $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$activePoints = $block->getActivePoints();
+$accrualPercent = $block->getAccrualPercentage();
+$maxRedemptionPercent = $block->getMaxRedemptionPercentage();
+$historyUrl = $block->getUrl('loyalty/account');
+?>
+<div class="block block-loyalty-balance dashboard-loyalty-card">
+    <div class="block-title">
+        <strong><?= $escaper->escapeHtml(__('Loyalty Points Balance')) ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="box box-information">
+            <div class="box-content">
+                <div class="balance-amount">
+                    <strong><?= $escaper->escapeHtml(number_format($activePoints, 2)) ?></strong>
+                    <span class="balance-currency-label">
+                        <?= $escaper->escapeHtml(__('Points')) ?>
+                    </span>
+                </div>
+                <p class="balance-note">
+                    <?= $escaper->escapeHtml(
+                        __(
+                            'Earn %1% cashback on completed orders. Redeem points at checkout (up to %2% cart value).',
+                            $accrualPercent,
+                            $maxRedemptionPercent
+                        )
+                    ) ?>
+                </p>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <a class="action primary" href="<?= $escaper->escapeUrl($historyUrl) ?>">
+                            <span><?= $escaper->escapeHtml(__('View Points &amp; History')) ?></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

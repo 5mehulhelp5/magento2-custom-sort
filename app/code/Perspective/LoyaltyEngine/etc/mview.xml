@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="loyalty_balance" class="Perspective\LoyaltyEngine\Model\Indexer\BalanceIndexer" group="indexer">
+        <subscriptions>
+            <table name="loyalty_transactions" entity_column="customer_id"/>
+        </subscriptions>
+    </view>
+</config>

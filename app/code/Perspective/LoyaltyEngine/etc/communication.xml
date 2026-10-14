@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="loyalty.points.accrual"
+           request="Perspective\LoyaltyEngine\Api\Data\OrderAccrualMessageInterface">
+        <handler name="loyaltyPointsAccrualHandler"
+                 type="Perspective\LoyaltyEngine\Model\Queue\OrderAccrualConsumer"
+                 method="process"/>
+    </topic>
+</config>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="customer_columns">
+        <column name="loyalty_points"
+                class="Perspective\LoyaltyEngine\Ui\Component\Listing\Column\LoyaltyPoints"
+                sortOrder="45">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Loyalty Points</label>
+                <sortable>true</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

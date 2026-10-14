@@ -1,0 +1,103 @@
+<?php
+/**
+ * @var \Perspective\LoyaltyEngine\Block\Account\LoyaltyHistory $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$activePoints = $block->getActivePoints();
+$transactions = $block->getTransactions();
+$accrualPercent = $block->getAccrualPercentage();
+$maxRedemptionPercent = $block->getMaxRedemptionPercentage();
+?>
+<div class="block block-loyalty-balance">
+    <div class="block-title">
+        <strong><?= $escaper->escapeHtml(__('Loyalty Points Balance')) ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="balance-amount">
+            <?= $escaper->escapeHtml(number_format($activePoints, 2)) ?>
+            <span class="balance-currency-label">
+                <?= $escaper->escapeHtml(__('Points')) ?>
+            </span>
+        </div>
+        <p class="balance-note">
+            <?= $escaper->escapeHtml(
+                __(
+                    'Earn %1% cashback on completed orders. Redeem points at checkout (up to %2% cart value).',
+                    $accrualPercent,
+                    $maxRedemptionPercent
+                )
+            ) ?>
+        </p>
+    </div>
+</div>
+
+<div class="block block-loyalty-history">
+    <div class="block-title">
+        <strong><?= $escaper->escapeHtml(__('Transaction History')) ?></strong>
+    </div>
+    <div class="block-content">
+        <?php if ($transactions && $transactions->getSize() > 0): ?>
+            <div class="table-wrapper loyalty-transactions-history">
+                <table class="data table table-loyalty-items history" id="my-loyalty-table">
+                    <caption class="table-caption"><?= $escaper->escapeHtml(__('Loyalty Transactions')) ?></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col date"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                            <th scope="col" class="col type"><?= $escaper->escapeHtml(__('Type')) ?></th>
+                            <th scope="col" class="col points"><?= $escaper->escapeHtml(__('Points')) ?></th>
+                            <th scope="col" class="col order"><?= $escaper->escapeHtml(__('Order #')) ?></th>
+                            <th scope="col" class="col comment">
+                                <?= $escaper->escapeHtml(__('Details / Comment')) ?>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($transactions as $transaction): ?>
+                            <?php
+                            $points = (float)$transaction->getPoints();
+                            $isPositive = $points > 0;
+                            $orderId = $transaction->getOrderId();
+                            $orderUrl = $orderId ? $block->getUrl('sales/order/view', ['order_id' => $orderId]) : '';
+                            ?>
+                            <tr>
+                                <td data-th="<?= $escaper->escapeHtmlAttr(__('Date')) ?>" class="col date">
+                                    <?= $escaper->escapeHtml($block->formatDateTime($transaction->getCreatedAt())) ?>
+                                </td>
+                                <td data-th="<?= $escaper->escapeHtmlAttr(__('Type')) ?>" class="col type">
+                                    <?= $escaper->escapeHtml($block->getTypeLabel((string)$transaction->getType())) ?>
+                                </td>
+                                <td data-th="<?= $escaper->escapeHtmlAttr(__('Points')) ?>"
+                                    class="col points <?= $isPositive ? 'positive' : 'negative' ?>">
+                                    <?= $escaper->escapeHtml($block->formatPoints($points)) ?>
+                                </td>
+                                <td data-th="<?= $escaper->escapeHtmlAttr(__('Order #')) ?>" class="col order">
+                                    <?php if ($orderId): ?>
+                                        <?php $orderIncrementId = $transaction->getData('order_increment_id'); ?>
+                                        <a href="<?= $escaper->escapeUrl($orderUrl) ?>">
+                                            #<?= $escaper->escapeHtml($orderIncrementId ?: (string)$orderId) ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="no-order">-</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td data-th="<?= $escaper->escapeHtmlAttr(__('Details / Comment')) ?>"
+                                    class="col comment">
+                                    <?= $escaper->escapeHtml($transaction->getComment() ?: '-') ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php if ($block->getChildHtml('pager')): ?>
+                <div class="toolbar loyalty-toolbar bottom">
+                    <?= $block->getChildHtml('pager') ?>
+                </div>
+            <?php endif; ?>
+        <?php else: ?>
+            <div class="message info empty">
+                <span><?= $escaper->escapeHtml(__('You have no loyalty transactions yet.')) ?></span>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

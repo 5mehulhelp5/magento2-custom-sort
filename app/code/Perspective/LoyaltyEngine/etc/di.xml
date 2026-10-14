@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Perspective\LoyaltyEngine\Api\Data\TransactionInterface"
+                type="Perspective\LoyaltyEngine\Model\Transaction"/>
+    <preference for="Perspective\LoyaltyEngine\Api\Data\TransactionSearchResultsInterface"
+                type="Perspective\LoyaltyEngine\Model\TransactionSearchResults"/>
+    <preference for="Perspective\LoyaltyEngine\Api\TransactionRepositoryInterface"
+                type="Perspective\LoyaltyEngine\Model\TransactionRepository"/>
+    <preference for="Perspective\LoyaltyEngine\Api\Data\BalanceInterface"
+                type="Perspective\LoyaltyEngine\Model\Balance"/>
+    <preference for="Perspective\LoyaltyEngine\Api\BalanceRepositoryInterface"
+                type="Perspective\LoyaltyEngine\Model\BalanceRepository"/>
+    <preference for="Perspective\LoyaltyEngine\Api\Data\OrderAccrualMessageInterface"
+                type="Perspective\LoyaltyEngine\Model\OrderAccrualMessage"/>
+    <preference for="Perspective\LoyaltyEngine\Api\LoyaltyCalculationServiceInterface"
+                type="Perspective\LoyaltyEngine\Model\Service\LoyaltyCalculationService"/>
+    <preference for="Perspective\LoyaltyEngine\Api\LoyaltyManagementInterface"
+                type="Perspective\LoyaltyEngine\Model\Service\LoyaltyManagement"/>
+
+    <type name="Perspective\LoyaltyEngine\Model\TransactionRepository">
+        <arguments>
+            <argument name="collectionProcessor" xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor</argument>
+        </arguments>
+    </type>
+</config>

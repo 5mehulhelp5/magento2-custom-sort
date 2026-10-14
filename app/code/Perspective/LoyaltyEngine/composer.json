@@ -1,0 +1,26 @@
+{
+    "name": "perspective/module-loyalty-engine",
+    "description": "High-performance Loyalty Engine for Magento 2 featuring RabbitMQ, Mview Indexer, GraphQL and Checkout Totals",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2",
+        "magento/framework": "*",
+        "magento/module-customer": "*",
+        "magento/module-sales": "*",
+        "magento/module-quote": "*",
+        "magento/module-checkout": "*",
+        "magento/module-indexer": "*",
+        "magento/module-graphql": "*",
+        "ext-intl": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Perspective\\LoyaltyEngine\\": ""
+        }
+    },
+    "version": "1.0.0"
+}

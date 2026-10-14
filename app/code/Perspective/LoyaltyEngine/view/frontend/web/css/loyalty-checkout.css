@@ -1,0 +1,92 @@
+/**
+ * Loyalty Engine Checkout Styles
+ */
+.loyalty-points-option {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.loyalty-points-option .payment-option-title {
+    padding: 12px 15px;
+    cursor: pointer;
+    background: #f9f9f9;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.loyalty-points-option .payment-option-title .action-toggle {
+    margin: 0;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1979c3;
+    text-decoration: none;
+}
+
+.loyalty-points-option .payment-option-content {
+    padding: 15px;
+}
+
+.loyalty-points-summary {
+    background: #f4f8fb;
+    border: 1px solid #d0e3f0;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 15px;
+}
+
+.loyalty-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.loyalty-stat-row:last-child {
+    margin-bottom: 0;
+}
+
+.loyalty-stat-label {
+    color: #555555;
+}
+
+.loyalty-stat-value {
+    color: #0066cc;
+    font-size: 14px;
+}
+
+.loyalty-stat-max {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.form-loyalty-points .payment-option-inner {
+    margin-bottom: 12px;
+}
+
+.form-loyalty-points .field .label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-loyalty-points input[type="number"] {
+    max-width: 260px;
+}
+
+.form-loyalty-points .actions-toolbar .action-apply {
+    margin-right: 8px;
+}
+
+.totals.loyalty-points-discount .mark .title {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.totals.loyalty-points-discount .amount .price {
+    color: #2e7d32;
+    font-weight: 600;
+}

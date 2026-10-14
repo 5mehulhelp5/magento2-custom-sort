@@ -1,0 +1,80 @@
+type Customer {
+    loyalty_points: LoyaltyPointsBalance!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\CustomerLoyaltyPoints")
+        @doc(description: "Active loyalty points balance for the customer")
+    loyalty_transactions(
+        pageSize: Int = 20,
+        currentPage: Int = 1
+    ): LoyaltyTransactionsOutput!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\CustomerLoyaltyTransactions")
+        @doc(description: "Immutable loyalty ledger transactions history")
+}
+
+type Query {
+    loyalty_customers_balance(customer_ids: [Int!]!): [LoyaltyCustomerBalanceItem!]!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\CustomersLoyaltyBalanceBatch")
+        @doc(description: "Batch query to fetch loyalty points for multiple customers (e.g. friends list) using Deferred SQL loading")
+}
+
+type LoyaltyCustomerBalanceItem {
+    customer_id: Int!
+    loyalty_points: LoyaltyPointsBalance!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\DeferredCustomerLoyaltyPoints")
+        @doc(description: "Deferred resolved loyalty points balance")
+}
+
+type LoyaltyPointsBalance {
+    balance: Float! @doc(description: "Total active loyalty points")
+    currency_code: String @doc(description: "Current store currency code")
+}
+
+type LoyaltyTransactionsOutput {
+    total_count: Int! @doc(description: "Total transactions count")
+    items: [LoyaltyTransactionItem!]! @doc(description: "List of transactions")
+}
+
+type LoyaltyTransactionItem {
+    transaction_id: ID! @doc(description: "Transaction ID")
+    order_id: ID @doc(description: "Related order ID")
+    points: Float! @doc(description: "Points delta (+ for accrual, - for redemption)")
+    type: String! @doc(description: "Transaction type")
+    comment: String @doc(description: "Transaction description")
+    created_at: String! @doc(description: "Transaction creation timestamp")
+}
+
+type Mutation {
+    applyLoyaltyPointsToCart(input: ApplyLoyaltyPointsInput!): ApplyLoyaltyPointsOutput!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\ApplyLoyaltyPointsToCart")
+        @doc(description: "Apply loyalty points discount to cart with validation of limits")
+    removeLoyaltyPointsFromCart(input: RemoveLoyaltyPointsInput!): RemoveLoyaltyPointsOutput!
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\RemoveLoyaltyPointsFromCart")
+        @doc(description: "Remove applied loyalty points discount from cart")
+}
+
+input ApplyLoyaltyPointsInput {
+    cart_id: String! @doc(description: "Masked cart ID or quote ID")
+    points: Float! @doc(description: "Amount of loyalty points to redeem")
+}
+
+type ApplyLoyaltyPointsOutput {
+    cart: Cart! @doc(description: "Updated cart object")
+    applied_points: Float! @doc(description: "Number of applied loyalty points")
+    discount_amount: Float @doc(description: "Loyalty discount amount in currency")
+}
+
+input RemoveLoyaltyPointsInput {
+    cart_id: String! @doc(description: "Masked cart ID or quote ID")
+}
+
+type RemoveLoyaltyPointsOutput {
+    cart: Cart! @doc(description: "Updated cart object")
+}
+
+type Cart {
+    loyalty_points_applied: Float @doc(description: "Number of loyalty points applied to the cart")
+    loyalty_discount_amount: Float @doc(description: "Loyalty discount currency amount applied to the cart")
+    max_redeemable_points: Float @doc(description: "Maximum redeemable points for this cart based on active balance and max redemption percentage")
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\CartMaxRedeemablePoints")
+    max_redemption_percentage: Float @doc(description: "Configured maximum percentage of cart subtotal that can be redeemed")
+        @resolver(class: "Perspective\\LoyaltyEngine\\Model\\Resolver\\CartMaxRedemptionPercentage")
+}

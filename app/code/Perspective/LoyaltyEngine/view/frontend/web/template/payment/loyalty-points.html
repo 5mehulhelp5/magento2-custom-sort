@@ -1,0 +1,72 @@
+<div class="payment-option _collapsible opc-payment-additional loyalty-points-option"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <h2 class="action action-toggle" id="block-loyalty-heading">
+            <!-- ko i18n: 'Apply Loyalty Points'-->Apply Loyalty Points<!-- /ko -->
+        </h2>
+    </div>
+    <div class="payment-option-content" data-role="content">
+        <!-- ko ifnot: isLoggedIn() -->
+            <div class="message notice">
+                <span><!-- ko i18n: 'Loyalty points can only be redeemed by registered customers. Please sign in to use your points.'--><!-- /ko --></span>
+            </div>
+        <!-- /ko -->
+
+        <!-- ko if: isLoggedIn() -->
+            <div class="loyalty-points-summary">
+                <div class="loyalty-stat-row">
+                    <span class="loyalty-stat-label"><!-- ko i18n: 'Your Balance:'--><!-- /ko --></span>
+                    <strong class="loyalty-stat-value" data-bind="text: getBalanceLabel()"></strong>
+                </div>
+                <div class="loyalty-stat-row">
+                    <span class="loyalty-stat-label" data-bind="text: getMaxRedeemableLabel()"></span>
+                    <span class="loyalty-stat-max" data-bind="text: getMaxRedeemableValueLabel()"></span>
+                </div>
+            </div>
+
+            <!-- ko if: message() -->
+                <div class="message" data-bind="css: messageType() === 'error' ? 'message-error error' : 'message-success success'">
+                    <span data-bind="text: message()"></span>
+                </div>
+            <!-- /ko -->
+
+            <form class="form form-loyalty-points" id="loyalty-points-form" data-bind="submit: onSubmit">
+                <div class="payment-option-inner">
+                    <div class="field">
+                        <label class="label" for="loyalty-points-input">
+                            <span><!-- ko i18n: 'Points to Redeem' --><!-- /ko --></span>
+                        </label>
+                        <div class="control">
+                            <input class="input-text"
+                                   type="number"
+                                   step="0.01"
+                                   min="0.01"
+                                   id="loyalty-points-input"
+                                   name="loyalty_points_input"
+                                   aria-label="Points to Redeem"
+                                   data-bind="value: pointsToApply, attr: {disabled: isApplied() || isLoading(), placeholder: getPointsInputPlaceholder()}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <!-- ko ifnot: isApplied() -->
+                            <button class="action action-apply primary"
+                                    type="submit"
+                                    data-bind="click: applyPoints, attr: {disabled: isLoading() || loyaltyBalance() <= 0}">
+                                <span data-bind="i18n: isLoading() ? 'Applying...' : 'Apply Points'"></span>
+                            </button>
+                        <!-- /ko -->
+                        <!-- ko if: isApplied() -->
+                            <button class="action action-cancel"
+                                    type="button"
+                                    data-bind="click: cancelPoints, attr: {disabled: isLoading()}">
+                                <span data-bind="i18n: isLoading() ? 'Canceling...' : 'Cancel Points'"></span>
+                            </button>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </form>
+        <!-- /ko -->
+    </div>
+</div>

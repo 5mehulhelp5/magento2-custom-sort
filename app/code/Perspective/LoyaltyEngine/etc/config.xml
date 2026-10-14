@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <loyalty_engine>
+            <general>
+                <enabled>1</enabled>
+                <accrual_percentage>5</accrual_percentage>
+                <max_redemption_percentage>50</max_redemption_percentage>
+                <points_rate>1</points_rate>
+            </general>
+        </loyalty_engine>
+    </default>
+</config>

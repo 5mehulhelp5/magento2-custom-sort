@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" connection="amqp" type="topic">
+        <binding id="loyaltyPointsAccrualBinding"
+                 topic="loyalty.points.accrual"
+                 destinationType="queue"
+                 destination="loyalty.points.accrual.queue"/>
+    </exchange>
+</config>
