@@ -20,7 +20,8 @@ $maxRedemptionPercent = $block->getMaxRedemptionPercentage();
             <div class="loyalty-admin-balance-main">
                 <span class="loyalty-admin-label"><?= $escaper->escapeHtml(__('Active Balance:')) ?></span>
                 <span class="loyalty-admin-value">
-                    <?= $escaper->escapeHtml(number_format($activePoints, 2)) ?> <?= $escaper->escapeHtml(__('Points')) ?>
+                    <?= $escaper->escapeHtml(number_format($activePoints, 2)) ?>
+                    <?= $escaper->escapeHtml(__('Points')) ?>
                 </span>
             </div>
             <p class="loyalty-admin-terms">
@@ -57,12 +58,14 @@ $maxRedemptionPercent = $block->getMaxRedemptionPercentage();
                             <?php
                             $points = (float)$transaction->getPoints();
                             $isPositive = $points > 0;
+                            $orderId = (int)($transaction->getOrderId() ?: 0);
                             $orderIncrementId = (string)($transaction->getData('order_increment_id') ?: '');
                             if ($orderIncrementId === '' && $orderId > 0) {
                                 $orderIncrementId = (string)$orderId;
                             }
-                            $orderUrl = $orderId ? $block->getOrderViewUrl($orderId) : '';
-                            $badgeClass = 'loyalty-type-badge type-' . $escaper->escapeHtmlAttr($transaction->getType());
+                            $orderUrl = $orderId > 0 ? $block->getOrderViewUrl($orderId) : '';
+                            $badgeType = (string)$transaction->getType();
+                            $badgeClass = 'loyalty-type-badge type-' . $escaper->escapeHtmlAttr($badgeType);
                             $pointsColor = $isPositive ? '#188038' : '#d93025';
                             ?>
                             <tr class="data-grid-tr-no-action">
@@ -71,14 +74,17 @@ $maxRedemptionPercent = $block->getMaxRedemptionPercentage();
                                 </td>
                                 <td class="col-type">
                                     <span class="<?= /* @noEscape */ $badgeClass ?>">
-                                        <?= $escaper->escapeHtml($block->getTypeLabel((string)$transaction->getType())) ?>
+                                        <?= $escaper->escapeHtml(
+                                            $block->getTypeLabel((string)$transaction->getType())
+                                        ) ?>
                                     </span>
                                 </td>
-                                <td class="col-points" style="font-weight: bold; color: <?= /* @noEscape */ $pointsColor ?>;">
+                                <td class="col-points"
+                                    style="font-weight: bold; color: <?= /* @noEscape */ $pointsColor ?>;">
                                     <?= $escaper->escapeHtml($block->formatPoints($points)) ?>
                                 </td>
                                 <td class="col-order">
-                                    <?php if ($orderId && $orderIncrementId): ?>
+                                    <?php if ($orderId > 0 && $orderIncrementId !== ''): ?>
                                         <a href="<?= $escaper->escapeUrl($orderUrl) ?>"
                                            target="_blank"
                                            title="<?= $escaper->escapeHtmlAttr(__('View Order')) ?>">
